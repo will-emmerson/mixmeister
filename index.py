@@ -11,7 +11,7 @@ dbx = dropbox.Dropbox(os.environ['DROPBOX_TOKEN'])
 
 def write_template(mixes):
     env = Environment(loader=FileSystemLoader('.'), autoescape=select_autoescape(['html', 'xml']))
-    env.get_template('index.html').stream(mixes=mixes).dump('output.html')
+    env.get_template('template.html').stream(mixes=mixes).dump('index.html')
 
 
 def _to_minutes(seconds):

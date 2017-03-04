@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mixes</title>
+</head>
+<body>
+<h1>DJ Decimator Mixes </h1>
+{% for mix in mixes %}
+    <h3>{{ mix.name }} [{{ mix.duration }}]
+        <a href="{{ mix.mp3_link }}">mp3</a>
+        {% if mix.cue_link %}<a href="{{ mix.cue_link }}">cue</a>{% endif %}
+    </h3>
+    {% for track in mix.tracks %}
+        [{{ track.offset[:5] }}] {{ track.performer }} - {{ track.title }}<br>
+    {% endfor %}
+    <br><br>
+{% endfor %}
+</body>
+</html>
