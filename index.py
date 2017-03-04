@@ -20,7 +20,7 @@ def _to_minutes(seconds):
 
 
 def _get_dropbox_link(filename):
-    return dbx.sharing_create_shared_link('/mixes/%s' % filename).url
+    return dbx.sharing_create_shared_link('/mixes/%s' % filename).url.replace('dl=0', 'dl=1')
 
 
 def get_mixes():
