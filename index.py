@@ -34,6 +34,13 @@ def get_mixes():
             name = filename[:-4]
             print(name)
 
+            parts = name.split('-')
+            if len(parts) > 1:
+                anchor = parts[1]
+            else:
+                anchor = parts[0]
+            anchor = anchor.strip().replace(' ', '-').replace('-[unmixed]', '').replace(',', '').lower()
+
             duration = _to_minutes(MP3(mp3_filename).info.length)
 
             cue_filename = mixes_dir + name + '.cue'
@@ -51,6 +58,7 @@ def get_mixes():
 
             mixes.append({
                 'name': name,
+                'anchor': anchor,
                 'tracks': tracks,
                 'duration': duration,
                 'mp3_link': mp3_link,

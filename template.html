@@ -7,7 +7,7 @@
 <body>
 <h1>DJ Decimator Mixes </h1>
 {% for mix in mixes %}
-    <h3>{{ mix.name }} [{{ mix.duration }}]
+    <h3 id="{{ mix.anchor }}">{{ mix.name }} [{{ mix.duration }}]
         <a href="{{ mix.mp3_link }}">mp3</a>
         {% if mix.cue_link %}<a href="{{ mix.cue_link }}">cue</a>{% endif %}
     </h3>
