@@ -1,3 +1,4 @@
+import json
 import os
 
 import dropbox
@@ -20,7 +21,13 @@ def _to_minutes(seconds):
 
 
 def _get_dropbox_link(filename):
-    return dbx.sharing_create_shared_link('/mixes/%s' % filename).url.replace('dl=0', 'dl=1')
+    link = links.get(filename)
+    if link:
+        return link
+    else:
+        link = dbx.sharing_create_shared_link('/mixes/%s' % filename).url.replace('dl=0', 'dl=1')
+        links[filename] = link
+        return link
 
 
 def get_mixes():
@@ -68,5 +75,11 @@ def get_mixes():
     return mixes
 
 
+with open('links.json') as f:
+    links = json.load(f)
+
 mixes = get_mixes()
 write_template(mixes)
+
+with open('links.json', 'w') as f:
+    json.dump(links, f)

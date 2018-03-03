@@ -2,8 +2,8 @@ import wave
 from contextlib import closing
 from os import listdir, path
 
-DIR = r'C:\Users\will\Dropbox\mixes\BPH2017'
-title = "BPH2017"
+title = "BPH2018"
+DIR = path.join("C:/Users/will/Dropbox/mixes", title)
 performer = "DJ Decimator"
 
 
@@ -58,8 +58,7 @@ FILE "%s.mp3" MP3''' % (title, performer, title)
         format_time(duration)
         current_time += duration
 
-        track_text = '''
-TRACK %(track)s AUDIO
+        track_text = '''    TRACK %(track)s AUDIO
     PERFORMER "%(performer)s"
     TITLE "%(title)s"
     INDEX 01 %(time)s''' % d
