@@ -76,11 +76,8 @@ def get_mixes():
     return mixes
 
 
-try:
-    with open('links.json') as f:
-        links = json.load(f)
-except FileNotFoundError:
-    links = {}
+with open('links.json') as f:
+    links = json.load(f)
 
 mixes = get_mixes()
 write_template(mixes)

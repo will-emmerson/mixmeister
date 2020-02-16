@@ -18,22 +18,47 @@
 
 <body>
 <div class="container-fluid">
-    <div class="row mt-5">
+
+    <div id="accordion" class="mt-2 mb-2">
+
         {% for mix in mixes %}
-            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                <h4 id="{{ mix.anchor }}">{{ mix.name }} <span class="text-muted">[{{ mix.duration }}]</span>
-                    <a href="{{ mix.mp3_link }}">mp3</a>
+        <div class="card">
+            <div class="card-header" id="id_{{ mix.anchor }}">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#target_{{ mix.anchor }}"
+                            aria-expanded="true"
+                            aria-controls="target_{{ mix.anchor }}">
+                        {{ mix.name }} <span class="text-muted">[{{ mix.duration }}]</span>
+                    </button>
+                    <a href="{{ mix.mp3_link }}" class="text-danger">mp3</a>
                     {% if mix.cue_link %}<a href="{{ mix.cue_link }}" class="text-info">cue</a>{% endif %}
-                </h4>
-                {% for track in mix.tracks %}
+                </h5>
+            </div>
+
+            <div id="target_{{ mix.anchor }}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                    {% for track in mix.tracks %}
                     <p><span class="text-muted">[{{ track.offset[:-3] }}]</span> {{ track.performer }}
                         - {{ track.title }}</p>
-                {% endfor %}
-                <br><br>
+                    {% endfor %}
+                </div>
             </div>
+        </div>
         {% endfor %}
+
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+
 </body>
 
 </html>
