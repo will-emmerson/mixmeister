@@ -1,9 +1,10 @@
 import wave
 from contextlib import closing
-from os import listdir, path
+from os import listdir
+from pathlib import Path
 
-title = "BPH2018"
-DIR = path.join("C:/Users/will/Dropbox/mixes", title)
+title = "bph2020"
+folder = Path.home() / 'Music' / 'mixes' / title / 'output'
 performer = "DJ Decimator"
 
 
@@ -23,12 +24,12 @@ def get_wav_duration(filename):
 
 def join_wavs():
     extension = "wav"
-    output_file = path.join(DIR, '%s.%s' % (title, extension))
+    output_file = str(folder / f'{title}.{extension}')
     with wave.open(output_file, 'wb') as output:
 
         for i, filename in enumerate(filenames):
             print('joining %s' % filename)
-            wavfile = path.join(DIR, filename)
+            wavfile = str(folder / filename)
             with closing(wave.open(wavfile)) as f:
                 if i == 0:
                     output.setparams(f.getparams())
@@ -52,7 +53,7 @@ FILE "%s.mp3" MP3''' % (title, performer, title)
         d = {k: v.strip() for k, v in d.items()}
 
         d['time'] = format_time(current_time)
-        wavfile = path.join(DIR, filename)
+        wavfile = str(folder / filename)
         duration = get_wav_duration(wavfile)
         print()
         format_time(duration)
@@ -67,12 +68,12 @@ FILE "%s.mp3" MP3''' % (title, performer, title)
 
     print(cuesheet)
 
-    filename = path.join(DIR, '%s.cue' % title)
+    filename = str(folder / f'{title}.cue')
     with open(filename, 'w') as f:
         f.write(cuesheet)
     print('wrote file %s' % filename)
 
 
-filenames = [f for f in listdir(DIR) if f.startswith('0') and f.endswith('.wav')]
+filenames = sorted([f for f in listdir(str(folder)) if f.startswith('0') and f.endswith('.wav')])
 write_cue_file()
 join_wavs()

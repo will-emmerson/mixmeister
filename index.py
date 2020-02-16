@@ -1,5 +1,6 @@
 import json
 import os
+from pathlib import Path
 
 import dropbox
 from jinja2 import Environment, select_autoescape, FileSystemLoader
@@ -31,12 +32,12 @@ def _get_dropbox_link(filename):
 
 
 def get_mixes():
-    mixes_dir = os.path.expandvars('%HOME%/Music/mp3/mixes/me/')
+    mixes_dir = Path.home() / 'Dropbox' / 'mixes'
     mixes = []
-    for filename in os.listdir(mixes_dir):
+    for filename in sorted(os.listdir(str(mixes_dir))):
         if filename.endswith('mp3'):
 
-            mp3_filename = mixes_dir + filename
+            mp3_filename = str(mixes_dir / filename)
             mp3_link = _get_dropbox_link(filename)
             name = filename[:-4]
             print(name)
@@ -50,7 +51,7 @@ def get_mixes():
 
             duration = _to_minutes(MP3(mp3_filename).info.length)
 
-            cue_filename = mixes_dir + name + '.cue'
+            cue_filename = str(mixes_dir / f'{name}.cue')
             tracks = []
             cue_link = None
 
@@ -58,7 +59,7 @@ def get_mixes():
                 cue_link = _get_dropbox_link(name + '.cue')
                 cuesheet = CueSheet()
                 cuesheet.setOutputFormat('%performer% - %title%\n%file%\n%tracks%', '%performer% - %title%')
-                with open(cue_filename) as f:
+                with open(cue_filename, encoding='latin1') as f:
                     cuesheet.setData(f.read())
                 cuesheet.parse()
                 tracks = cuesheet.tracks
@@ -75,8 +76,11 @@ def get_mixes():
     return mixes
 
 
-with open('links.json') as f:
-    links = json.load(f)
+try:
+    with open('links.json') as f:
+        links = json.load(f)
+except FileNotFoundError:
+    links = {}
 
 mixes = get_mixes()
 write_template(mixes)
